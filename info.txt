@@ -1,0 +1,33 @@
+Say it aloud using espeak (say didn't pipe)
+
+sudo apt install espeak 
+#v1
+echo "Why is the sky blue?" | ollama run tinyllama --verbose | espeak
+
+espeak --voices=variant
+
+#v2
+echo "Why is the sky blue?" | ollama run tinyllama --verbose | espeak -ven+f2
+
+Read it and let me read the text
+
+echo "Why is the sky blue?" | ollama run tinyllama --verbose | tee response.txt| espeak -ven+f2; cat response.txt
+ 
+maybe espeak -f <text file> OR --stdin Takes the text input from stdin.
+
+#v4 Final for now
+FASTER (-s 260 default is 175) with female voice (ven+f2) and display text from saved file (response.txt)
+time echo "Why is the sky blue?" | ollama run tinyllama --verbose | tee response.txt| espeak -ven+f2 -s 260; cat response.txt
+
+time echo "Why is the sky blue?" | ollama run dolphin-phi --verbose | tee response.txt| espeak -ven+f2 -s 260; cat response.txt
+# 1.6GB
+
+Ideas? create an alias so I can just type llm Why is the sky blue?
+
+#v4a Here is a function that must be asked with quotes. Can be added to bashrc as an alias
+ollama_ask() { echo "$1" | ollama run tinyllama --verbose; }
+ollama_ask "why do we have a leap year?"
+
+#v4b Combine with v4 for read back and print out response
+ollama_say() { echo "$1" | ollama run tinyllama --verbose | tee response.txt| espeak -ven+f2 -s 260; cat response.txt ; } 
+ollama_say 'when does summer start?'
